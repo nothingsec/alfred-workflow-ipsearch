@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.tianshilei.ip</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>934DA4BF-4E48-4A58-8D62-9CE08E4017B3</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>6F9460C6-970B-4FDF-9DFF-35BBA8864AF3</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Shilei Tian</string>
+	<key>description</key>
+	<string>Search for the location of IP using ip.cn</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Search for the location of IP</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>6F9460C6-970B-4FDF-9DFF-35BBA8864AF3</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>ip</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Searching for the IP, please wait…</string>
+				<key>script</key>
+				<string>import requests
+import alfred
+from bs4 import BeautifulSoup
+
+session = requests.Session()
+headers = {
+  "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.10 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.10",
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+}
+
+query = '{query}'
+url = "http://www.ip.cn/index.php?ip=" + query
+req = session.get(url, headers = headers)
+
+bsObj = BeautifulSoup(req.text, "html.parser")
+location = bsObj.find("div", {"class": "well"}).findAll("code")[1].get_text()
+company = bsObj.find("div", {"class": "well"}).findAll("p")[3].get_text()
+
+res = alfred.Item({'uid': 1, 'arg': url}, location, company)
+results = []
+results.append(res)
+
+xml = alfred.xml(results)
+alfred.write(xml)</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>Searching for the location of IP</string>
+				<key>title</key>
+				<string>Searching for the location of IP</string>
+				<key>type</key>
+				<integer>3</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>934DA4BF-4E48-4A58-8D62-9CE08E4017B3</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>6F9460C6-970B-4FDF-9DFF-35BBA8864AF3</key>
+		<dict>
+			<key>xpos</key>
+			<integer>530</integer>
+			<key>ypos</key>
+			<integer>110</integer>
+		</dict>
+		<key>934DA4BF-4E48-4A58-8D62-9CE08E4017B3</key>
+		<dict>
+			<key>xpos</key>
+			<integer>290</integer>
+			<key>ypos</key>
+			<integer>110</integer>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>http://tianshilei.me</string>
+</dict>
+</plist>
